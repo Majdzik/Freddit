@@ -76,11 +76,7 @@ background: rgba(0,0,0,.8);
 
 <body>
   <input type="text" id="s" value="aww">
-  <div></div>
-
-  <input type="checkbox" id="ossm" name="ossm"> 
-  <label for="ossm">CSS is Awesome</label> 
-  
+  <div></div> 
   <script src="https://cdn.jsdelivr.net/npm/reddit.js@0.1.4/reddit.min.js"></script>
   <script>
     let next = [];
@@ -108,7 +104,7 @@ background: rgba(0,0,0,.8);
           const label = document.createElement('label')
           label.htmlFor = input.name;
           label.for = input.name;
-          console.log('label,input',label,input)
+          
           const img = document.createElement('img');
           img.src = url.replace('.gifv','.gif');
           label.append(img);
@@ -127,9 +123,26 @@ background: rgba(0,0,0,.8);
         } else if (url.length > 0) {
 
           const i = document.createElement('a');
+          const img = document.createElement('img');
+          img.src = url + '.jpg';
           i.href = url;
-          i.textContent = url;
-          listView.append(i);
+          i.append(img)
+          //i.textContent = url;
+          //listView.append(i);
+
+          const input = document.createElement('input')
+          input.type='checkbox';
+          input.name='img'+(id++);
+          input.id=input.name;
+          const label = document.createElement('label')
+          label.htmlFor = input.name;
+          label.for = input.name;
+          
+         
+          label.append(i);
+          listView.append(input);
+          listView.append(label);
+
         }
       });
     }
