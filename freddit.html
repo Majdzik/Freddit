@@ -110,7 +110,7 @@ background: rgba(0,0,0,.8);
           label.for = input.name;
           console.log('label,input',label,input)
           const img = document.createElement('img');
-          img.src = url;
+          img.src = url.replace('.gifv','.gif');
           label.append(img);
           listView.append(input);
           listView.append(label);
