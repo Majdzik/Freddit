@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Freddit</title>
   <style>
     * {
@@ -16,7 +15,8 @@
     video {
       width: 20%
     }
-    .selected{
+
+    .selected {
       width: auto;
       position: fixed;
       top: 0;
@@ -26,87 +26,92 @@
       max-height: 100%;
       margin: 0 auto;
     }
-    .cl{
+
+    .cl {
       display: block;
-      
     }
-label{
-  display: inline;
-}
-input[type=checkbox]{
-  display: none;
 
-}
-input[type=checkbox],
-    input[type=checkbox] + label > img {
+    label {
+      display: inline;
+    }
+
+    input[type=checkbox] {
+      display: none;
+    }
+
+    input[type=checkbox],
+    input[type=checkbox]+label>img {
       /* width: 20% */
-} input[type=checkbox]:checked{
-  width: 100%;
-position: fixed;
-z-index: 1;
-height: 100%;
-opacity: .5;
-left: 0;
-margin: 0;
-}
-label > input[type=checkbox]:checked + img,
-input[type=checkbox]:checked + label > img{
-  width: auto;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  max-width: 100%;
-  max-height: 100%;
-  margin: 0 auto;
-} 
-input[type=checkbox]:checked+label{
-  width: 100%;
-position: fixed;
-height: 100%;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: rgba(0,0,0,.8);
-}
+    }
 
+    input[type=checkbox]:checked {
+      width: 100%;
+      position: fixed;
+      z-index: 1;
+      height: 100%;
+      opacity: .5;
+      left: 0;
+      margin: 0;
+    }
+
+    label>input[type=checkbox]:checked+img,
+    input[type=checkbox]:checked+label>img {
+      width: auto;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      max-width: 100%;
+      max-height: 100%;
+      margin: 0 auto;
+    }
+
+    input[type=checkbox]:checked+label {
+      width: 100%;
+      position: fixed;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, .8);
+    }
   </style>
 </head>
 
 <body>
   <input type="text" id="s" value="aww">
-  <div></div> 
+  <div></div>
   <script src="https://cdn.jsdelivr.net/npm/reddit.js@0.1.4/reddit.min.js"></script>
   <script>
     let next = [];
     let r = 'aww';
-    let working=false;
-    let wait=false;
-    let listView=document.body.children[1];
-    let id=0;
+    let working = false;
+    let wait = false;
+    let listView = document.body.children[1];
+    let id = 0;
 
     function addPosts(arr) {
-      arr.forEach((p,i) => {
-        
+      arr.forEach((p, i) => {
 
-        if(i%5==0){
+
+        if (i % 5 == 0) {
           const cdiv = document.createElement('div');
           cdiv.classList.add('cl')
           listView.append(cdiv);
-        }        
+        }
         const url = p.data.url || '';
         if (url.match(/\.(jpg?|png|gif|gifv)$/)) {
           const input = document.createElement('input')
-          input.type='checkbox';
-          input.name='img'+(id++);
-          input.id=input.name;
+          input.type = 'checkbox';
+          input.name = 'img' + (id++);
+          input.id = input.name;
           const label = document.createElement('label')
           label.htmlFor = input.name;
           label.for = input.name;
-          
+
           const img = document.createElement('img');
-          img.src = url.replace('.gifv','.gif');
+          img.src = url.replace('.gifv', '.gif');
           label.append(img);
           listView.append(input);
           listView.append(label);
@@ -131,14 +136,14 @@ background: rgba(0,0,0,.8);
           //listView.append(i);
 
           const input = document.createElement('input')
-          input.type='checkbox';
-          input.name='img'+(id++);
-          input.id=input.name;
+          input.type = 'checkbox';
+          input.name = 'img' + (id++);
+          input.id = input.name;
           const label = document.createElement('label')
           label.htmlFor = input.name;
           label.for = input.name;
-          
-         
+
+
           label.append(i);
           listView.append(input);
           listView.append(label);
@@ -147,38 +152,70 @@ background: rgba(0,0,0,.8);
       });
     }
 
-    function getPost(){
+    function getPost() {
       reddit.hot(r).limit(50).fetch(function (res) {
-      next[next.length] = res.data.after;      
-      addPosts(res.data.children)
-    });
+        next[next.length] = res.data.after;
+        addPosts(res.data.children)
+      });
     }
 
-    document.getElementById('s').onkeypress=function(e){
-      if(wait)return;
-      wait=true;
-      setTimeout(function(){
-        wait=false;
-        r=e.target.value
-        next=[];
-        listView.innerHTML='';
+    document.getElementById('s').onkeypress = function (e) {
+      if (wait) return;
+      wait = true;
+      setTimeout(function () {
+        wait = false;
+        r = e.target.value
+        next = [];
+        listView.innerHTML = '';
         getPost();
-      },1000)
+      }, 1000)
       console.log(e.target.value)
     };
-    document.getElementById('s').onkeydown=function(e){
-      
+    document.getElementById('s').onkeydown = function (e) {
+
     };
 
+    const keyMap = [{
+      key: 39, fn: function () {
+        let check = 0;
+        let arr = document.querySelectorAll('input[type=checkbox]');
+        arr.forEach((el, i) => {
+          if (el.checked) {
+            el.checked = false;
+            check = i + 1;
+            return;
+          }
+        });
+        arr[arr.length > check ? check : 0].checked = true;
+      }
+    }, {
+      key: 37, fn: function () {
+        let check = 0;
+        let arr = document.querySelectorAll('input[type=checkbox]');
+        arr.forEach((el, i) => {
+          if (el.checked) {
+            el.checked = false;
+            check = i - 1;
+            return;
+          }
+        });
+        arr[0 < check ? check : arr.length-1].checked = true;
+      }
+    }]
+    function keyDownTextField(e) {
+      keyMap.forEach((k) => { if (k.key == e.keyCode) k.fn(e) })
+    }
+    document.addEventListener("keydown", keyDownTextField, false);
+
     document.body.onscroll = function (e) {
-      var el = document.body;      
+      var el = document.body;
       if ((el.scrollHeight - window.innerHeight) <= window.pageYOffset) {
-        if(working)return;
-        working=true;
+        if (working) return;
+        working = true;
         reddit.hot(r).limit(50).after(next[next.length - 1]).fetch(function (res) {
           next[next.length] = res.data.after;
           addPosts(res.data.children);
-          working=false;
+          working = false;
         })
       }
     }
