@@ -6,9 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Freddit</title>
   <style>
-    * {
-      /* float: left;
-      top: 0; */
+    a>img,
+    a>video {
+      border: solid 1px rgb(0, 0, 255);
+      width: calc(20% - 2px);
     }
 
     img,
@@ -199,7 +200,7 @@
             return;
           }
         });
-        arr[0 < check ? check : arr.length-1].checked = true;
+        arr[0 < check ? check : arr.length - 1].checked = true;
       }
     }]
     function keyDownTextField(e) {
