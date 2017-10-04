@@ -54,7 +54,16 @@
       left: 0;
       margin: 0;
     }
-
+    input[type=checkbox]+label>a,input[type=checkbox]+label>br{
+     display: none;
+    }
+    input[type=checkbox]:checked+label>br{
+      display: unset;
+    }
+    input[type=checkbox]:checked+label>a{
+      color: white;
+      display: inline;
+    }
     label>input[type=checkbox]:checked+img,
     input[type=checkbox]:checked+label>img,
     input[type=checkbox]:checked+label>a>img {
@@ -97,6 +106,9 @@
     function addPosts(arr) {
       arr.forEach((p, i) => {
 
+        // if(i<3){
+        //   console.log(p)
+        // }
 
         if (i % 5 == 0) {
           const cdiv = document.createElement('div');
@@ -104,6 +116,17 @@
           listView.append(cdiv);
         }
         const url = p.data.url || '';
+        const permalink=document.createElement('a')
+        permalink.href='//reddit.com'+p.data.permalink;
+        permalink.append('/r/')
+
+        const btn=document.createElement('a')
+        btn.href='#';
+        btn.onclick=()=>{
+          console.log(p.data)
+        }        
+        btn.append('[b]');
+
         if (url.match(/\.(jpg?|png|gif|gifv)$/)) {
           const input = document.createElement('input')
           input.type = 'checkbox';
@@ -115,6 +138,9 @@
 
           const img = document.createElement('img');
           img.src = url.replace('.gifv', '.gif');
+          label.append(permalink)
+          label.append(document.createElement('br'))
+          label.append(btn)
           label.append(img);
           listView.append(input);
           listView.append(label);
@@ -132,7 +158,7 @@
 
           const i = document.createElement('a');
           const img = document.createElement('img');
-          img.src = url + '.jpg';
+          img.src = p.data.thumbnail;// url + '.jpg';
           i.href = url;
           i.append(img)
           //i.textContent = url;
@@ -146,7 +172,9 @@
           label.htmlFor = input.name;
           label.for = input.name;
 
-
+          label.append(permalink)
+          label.append(document.createElement('br'))
+          label.append(btn)
           label.append(i);
           listView.append(input);
           listView.append(label);
